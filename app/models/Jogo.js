@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    const mongoose = app.models.database,
+    const mongoose = app.config.database,
     Schema = mongoose.Schema;
 
     const jogoSchema = new Schema({

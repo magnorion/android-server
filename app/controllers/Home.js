@@ -24,7 +24,15 @@ module.exports = (app) => {
         const game = new Jogo(req.body);
         
         game.save()
-            .then(() => res.send(JSON.stringify({msg: 'Jogo Adicionado'})))
+            .then(() => res.send(JSON.stringify({msg: 'Jogo adicionado'})))
+            .catch((err) => res.send(JSON.stringify({msg: err})));
+    }
+
+    this.remove = function (req, res) {
+        if (typeof req.body.id == 'undefined') return false;
+
+        Jogo.remove({_id: req.body.id})
+            .then(() => res.send(JSON.stringify({msg: 'Jogo removido'})))
             .catch((err) => res.send(JSON.stringify({msg: err})));
     }
 

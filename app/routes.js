@@ -5,4 +5,5 @@ module.exports = (app) => {
     app.get('/', Home.index);
 
     app.post('/jogos/novo', Home.novo);
+    app.post('/jogos/remove', Home.remove);
 }
