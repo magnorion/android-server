@@ -6,4 +6,5 @@ module.exports = (app) => {
 
     app.post('/jogos/novo', Home.novo);
     app.post('/jogos/remove', Home.remove);
+    app.post('/jogos/editar', Home.editar);
 }

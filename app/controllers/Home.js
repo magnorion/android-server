@@ -1,6 +1,7 @@
 module.exports = (app) => {
     
-    const Jogo = app.models.Jogo;
+    const Jogo = app.models.Jogo,
+    self = this;
 
     this.index = function (req, res) {
         Jogo.find({}, (err, jogos) => {
@@ -29,11 +30,43 @@ module.exports = (app) => {
     }
 
     this.remove = function (req, res) {
-        if (typeof req.body.id == 'undefined') return false;
+        const id = req.body.id || undefined;
+        if (typeof id == 'undefined') {
+            res.send(JSON.stringify({
+                msg: 'Por favor, informe o id do jogo'
+            }));
+        }
 
-        Jogo.remove({_id: req.body.id})
+        Jogo.remove({_id: id})
             .then(() => res.send(JSON.stringify({msg: 'Jogo removido'})))
             .catch((err) => res.send(JSON.stringify({msg: err})));
+    }
+
+    this.editar = function (req, res) {
+        const id = req.body.id || undefined;
+
+        if (typeof id == 'undefined') {
+            res.send(JSON.stringify({
+                msg: 'Por favor, informe o id do jogo'
+            }));
+        }
+
+        Jogo.findById(id, (err, game) => {
+            if (err) {
+                res.send(JSON.stringify({
+                    msg: 'Este jogo não existe!'
+                }));
+
+                return false;
+            }
+
+            game.titulo = req.body.titulo;
+            game.descricao = req.body.descricao;
+
+            game.save()
+            .then(() => res.send(JSON.stringify({msg: 'Jogo alterado!'})))
+            .catch((err) => res.send(JSON.stringify({msg: err})));
+        });
     }
 
     return this;
