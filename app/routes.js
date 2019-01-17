@@ -1,10 +1,18 @@
 module.exports = (app) => {
     const Home = app.controllers.Home;
     
-    app.get('/jogos', Home.index);
-    app.get('/', Home.index);
+    // Cors
+    const cors = require('cors');
+    app.use(cors());
 
-    app.post('/jogos/novo', Home.novo);
-    app.post('/jogos/remove', Home.remove);
-    app.post('/jogos/editar', Home.editar);
+    const checker = {
+        origin: (origin, callback) => callback(null, true)
+    }
+    
+    app.get('/jogos', cors(checker), Home.index);
+    app.get('/', cors(checker), Home.index);
+
+    app.post('/jogos/novo', cors(checker), Home.novo);
+    app.post('/jogos/remove', cors(checker), Home.remove);
+    app.post('/jogos/editar', cors(checker), Home.editar);
 }
