@@ -2,31 +2,38 @@ module.exports = function (app) {
   const Usuario = app.models.Usuario;
 
   this.login = function (req, res) {
-    const user = req.body.usuario;
+    const user = {
+      username: req.body.username,
+      pass: req.body.pass
+    };
 
-    Usuario.find({username: user.username, pass: user.pass}, (err, u) => {
-      if (err) {
-        res.send(JSON.parse({
-          message: 'usuario não existe'
-        }));
-      } else {
-        res.send(JSON.parse({
-          message: 'usuario autenticado'
-        }));
-      }
-    });
+    try {
+      Usuario.find(user, (err, u) => {
+        if (err || u.length == 0) {
+          res.send(JSON.stringify({
+            message: 'usuario não existe'
+          }));
+        } else {
+          res.send(JSON.stringify({
+            message: 'usuario autenticado'
+          }));
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   this.cadastro = function (req, res) {
-    const user = new Usuario(req.body.usuario);
+    const user = new Usuario(req.body);
 
     user.save(err => {
       if (err) {
-        res.send(JSON.parse({
+        res.send(JSON.stringify({
           message: 'houve um erro!'
         }));
       } else {
-        res.send(JSON.parse({
+        res.send(JSON.stringify({
           message: 'usuario criado'
         }));
       }

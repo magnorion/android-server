@@ -1,6 +1,6 @@
 module.exports = (app) => {
     const Home = app.controllers.Home,
-    Usuario = app.controllers.usuario;
+    Usuario = app.controllers.Usuario;
     
     // Cors
     const cors = require('cors');
